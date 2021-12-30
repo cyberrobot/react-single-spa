@@ -1,4 +1,3 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { ModuleFederationPlugin } = require('webpack').container
 const path = require('path')
 const outputPath = path.resolve(__dirname, 'dist')
@@ -15,7 +14,7 @@ module.exports = {
   },
 
   output: {
-    publicPath: 'http://localhost:3000/',
+    publicPath: 'http://localhost:3002/',
   },
 
   resolve: {
@@ -34,7 +33,10 @@ module.exports = {
         test: /\.tsx?$/,
         loader: require.resolve('babel-loader'),
         options: {
-          presets: [require.resolve('@babel/preset-typescript')],
+          presets: [
+            require.resolve('@babel/preset-react'),
+            require.resolve('@babel/preset-typescript'),
+          ],
         },
       },
     ],
@@ -42,18 +44,18 @@ module.exports = {
 
   plugins: [
     new ModuleFederationPlugin({
-      name: 'container',
-      library: { type: 'var', name: 'container' },
+      name: 'body',
+      library: { type: 'var', name: 'body' },
       filename: 'remoteEntry.js',
-      remotes: {
-        'home-nav': 'navigation',
-        'home-body': 'body',
+      remotes: {},
+      exposes: {
+        './Body': './src/Body',
       },
-      exposes: {},
-      shared: [],
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true },
+        'single-spa-react': { singleton: true },
+      },
     }),
   ],
 }

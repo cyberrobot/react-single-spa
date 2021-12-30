@@ -1,4 +1,4 @@
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
+const { ModuleFederationPlugin } = require('webpack').container
 const path = require('path')
 const outputPath = path.resolve(__dirname, 'dist')
 
@@ -22,7 +22,9 @@ module.exports = {
   },
 
   devServer: {
-    contentBase: outputPath,
+    static: {
+      directory: outputPath,
+    },
   },
 
   module: {
@@ -47,10 +49,14 @@ module.exports = {
       filename: 'remoteEntry.js',
       remotes: {},
       exposes: {
-        Header: './src/Header',
-        Footer: './src/Footer',
+        './Header': './src/Header',
+        './Footer': './src/Footer',
       },
-      shared: ['react', 'react-dom', 'single-spa-react'],
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true },
+        'single-spa-react': { singleton: true },
+      },
     }),
   ],
 }
