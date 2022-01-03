@@ -1,33 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { ModuleFederationPlugin } = require('webpack').container
-const path = require('path')
-const outputPath = path.resolve(__dirname, 'dist')
 
 module.exports = {
-  entry: './src/index',
-  cache: false,
-
-  mode: 'development',
-  devtool: 'source-map',
-
-  optimization: {
-    minimize: false,
-  },
-
-  output: {
-    publicPath: 'http://localhost:3000/',
-  },
-
-  resolve: {
-    extensions: ['.jsx', '.js', '.json', '.ts', '.tsx'],
-  },
-
-  devServer: {
-    static: {
-      directory: outputPath,
-    },
-  },
-
   module: {
     rules: [
       {

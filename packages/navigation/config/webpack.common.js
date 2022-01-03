@@ -1,32 +1,6 @@
 const { ModuleFederationPlugin } = require('webpack').container
-const path = require('path')
-const outputPath = path.resolve(__dirname, 'dist')
 
 module.exports = {
-  entry: './src/index',
-  cache: false,
-
-  mode: 'development',
-  devtool: 'source-map',
-
-  optimization: {
-    minimize: false,
-  },
-
-  output: {
-    publicPath: 'http://localhost:3002/',
-  },
-
-  resolve: {
-    extensions: ['.jsx', '.js', '.json', '.ts', '.tsx'],
-  },
-
-  devServer: {
-    static: {
-      directory: outputPath,
-    },
-  },
-
   module: {
     rules: [
       {
@@ -44,12 +18,13 @@ module.exports = {
 
   plugins: [
     new ModuleFederationPlugin({
-      name: 'body',
-      library: { type: 'var', name: 'body' },
+      name: 'navigation',
+      library: { type: 'var', name: 'navigation' },
       filename: 'remoteEntry.js',
       remotes: {},
       exposes: {
-        './Body': './src/Body',
+        './Header': './src/Header',
+        './Footer': './src/Footer',
       },
       shared: {
         react: { singleton: true },
